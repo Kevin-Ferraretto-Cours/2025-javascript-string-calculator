@@ -1,0 +1,15 @@
+{
+  "name": "2025-javascript-string-calculator",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "vitest": "^3.1.1"
+  }
+}
