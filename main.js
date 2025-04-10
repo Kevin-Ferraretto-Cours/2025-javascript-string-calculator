@@ -1,11 +1,14 @@
 export function add(numbers) {
-    if (numbers == "") {
+    // Si la chaîne est vide, retourner 0
+    if (numbers === "") {
         return 0;
-    } else if (numbers == "1") {
-        return 1;
-    } else if (numbers == "1,2") {
-        return 3;
-    } else if (numbers == "1,2,3") {
-        return 6;
     }
+
+    // Split la chaîne par les virgules pour obtenir un tableau de nombres
+    const numberArray = numbers.split(",");
+
+    // Convertie chaque élément en nombre et les additionne
+    return numberArray.reduce((sum, currentValue) => {
+        return sum + parseInt(currentValue);
+    }, 0);
 }
