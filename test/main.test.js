@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {add} from "./main.js";
+import {add} from "../src/main.js";
 
 describe('add function', () => {
     it('should return 0 for empty string', () => {
