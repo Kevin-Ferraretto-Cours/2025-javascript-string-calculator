@@ -27,4 +27,14 @@ describe('add function', () => {
         expect(add("0,0,0")).toBe(0);
         expect(add("1,0,2,0,3")).toBe(6);
     });
+
+    it('should handle newline as delimiter', () => {
+        expect(add("1\n2,3")).toBe(6);
+        expect(add("1\n2\n3")).toBe(6);
+        expect(add("5\n10,15\n20")).toBe(50);
+    });
+
+    it('should handle mixed delimiters', () => {
+        expect(add("1,2\n3,4\n5")).toBe(15);
+    });
 });
