@@ -37,4 +37,20 @@ describe('add function', () => {
     it('should handle mixed delimiters', () => {
         expect(add("1,2\n3,4\n5")).toBe(15);
     });
+
+    it('should handle custom delimiter defined with //[delimiter]\\n format', () => {
+        expect(add("//;\n1;2")).toBe(3);
+        expect(add("//;\n1;2;3")).toBe(6);
+        expect(add("//:\n5:10:15:20")).toBe(50);
+    });
+
+    it('should handle special characters as custom delimiters', () => {
+        expect(add("//.\n1.2.3")).toBe(6);
+        expect(add("//-\n5-10-15")).toBe(30);
+        expect(add("//|\n1|2|3")).toBe(6);
+    });
+
+    it('should handle custom delimiter and still support newlines within numbers', () => {
+        expect(add("//;\n1;2\n3")).toBe(6);
+    });
 });
