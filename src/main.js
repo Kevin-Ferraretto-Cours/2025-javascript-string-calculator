@@ -59,18 +59,37 @@ export function extractDelimiterAndNumbers(input) {
         numbers: input
     };
 
+    // Cas particulier pour une entrée vide
+    if (!input) {
+        result.numbers = "";
+        return result;
+    }
+
     // Vérifie si l'entrée commence par "//"
     if (input.startsWith("//") && input.length >= 4) {
-        // Le délimiteur est le troisième caractère (indice 2)
-        const potentialDelimiter = input.charAt(2);
+        // Vérifier si nous avons un délimiteur multi-caractères avec format //[delimiter]\n
+        if (input.charAt(2) === '[') {
+            const closingBracketIndex = input.indexOf(']', 3);
 
-        // Vérifie si le quatrième caractère est un saut de ligne
-        if (input.charAt(3) === '\n') {
-            // Met à jour le délimiteur avec celui spécifié
-            result.delimiter = potentialDelimiter;
+            // Vérifier si nous avons un crochet fermant et un saut de ligne après
+            if (closingBracketIndex > 3 && input.charAt(closingBracketIndex + 1) === '\n') {
+                // Extraire le délimiteur entre les crochets
+                const multiCharDelimiter = input.substring(3, closingBracketIndex);
+                result.delimiter = multiCharDelimiter;
+
+                // Obtenir la sous-chaîne après le délimiteur et le saut de ligne
+                result.numbers = input.substring(closingBracketIndex + 2);
+                return result;
+            }
+        }
+        // Sinon, vérifier si c'est le format original avec un délimiteur d'un seul caractère
+        else if (input.charAt(3) === '\n') {
+            // Met à jour le délimiteur avec celui spécifié (un seul caractère)
+            result.delimiter = input.charAt(2);
 
             // Obtient la sous-chaîne à partir de l'indice 4 (après le délimiteur et le saut de ligne)
             result.numbers = input.substring(4);
+            return result;
         }
     }
 
