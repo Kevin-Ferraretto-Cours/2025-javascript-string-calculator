@@ -112,4 +112,20 @@ describe('add function', () => {
     it('should handle custom delimiter and still support newlines within numbers', () => {
         expect(add("//;\n1;2\n3")).toBe(6);
     });
+
+    it('should throw an error when a single negative number is provided', () => {
+        expect(() => add("-1")).toThrow("Negatives not allowed. [-1]");
+    });
+
+    it('should throw an error when multiple negative numbers are provided', () => {
+        expect(() => add("-1,2,-3,4")).toThrow("Negatives not allowed. [-1, -3]");
+    });
+
+    it('should throw an error with negative numbers with custom delimiter', () => {
+        expect(() => add("//;\n-1;2;-3")).toThrow("Negatives not allowed. [-1, -3]");
+    });
+
+    it('should throw an error with negative numbers and newlines', () => {
+        expect(() => add("1\n-2\n3,-4")).toThrow("Negatives not allowed. [-2, -4]");
+    });
 });
