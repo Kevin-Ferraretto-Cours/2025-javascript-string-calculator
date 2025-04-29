@@ -16,13 +16,28 @@ export function add(numbers) {
     // Split la chaîne par les virgules pour obtenir un tableau de nombres
     const numberArray = normalizedInput.split(delimiter);
 
+    // Tableau pour stocker les nombres négatifs trouvés
+    const negativeNumbers = [];
+
     // Convertie chaque élément en nombre et les additionne
     let sum = 0;
     for (const element of numberArray) {
         const value = element.trim();
         if (value !== "") {
-            sum += parseInt(value);
+            const number = parseInt(value);
+
+            // Vérifier si le nombre est négatif
+            if (number < 0) {
+                negativeNumbers.push(number);
+            }
+
+            sum += number;
         }
+    }
+
+    // Si des nombres négatifs sont trouvés, lever une exception
+    if (negativeNumbers.length > 0) {
+        throw new Error(`Negatives not allowed. [${negativeNumbers.join(", ")}]`);
     }
 
     return sum;
