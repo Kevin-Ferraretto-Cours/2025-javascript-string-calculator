@@ -128,4 +128,26 @@ describe('add function', () => {
     it('should throw an error with negative numbers and newlines', () => {
         expect(() => add("1\n-2\n3,-4")).toThrow("Negatives not allowed. [-2, -4]");
     });
+
+    it('should ignore numbers greater than 1000', () => {
+        expect(add("1,2,1001")).toBe(3);
+        expect(add("2,1000,1001")).toBe(1002); // 1000 est inclus, mais pas 1001
+    });
+
+    it('should handle the example case "1\\n2,1002" == 3', () => {
+        expect(add("1\n2,1002")).toBe(3);
+    });
+
+    it('should work with mixed valid and invalid numbers', () => {
+        expect(add("5,1001,10,2000,15")).toBe(30);
+    });
+
+    it('should work with custom delimiters and numbers > 1000', () => {
+        expect(add("//;\n1;2;1001;3")).toBe(6);
+    });
+
+    it('should work with exact boundary number 1000', () => {
+        expect(add("1000")).toBe(1000);
+        expect(add("1000,1001")).toBe(1000);
+    });
 });
