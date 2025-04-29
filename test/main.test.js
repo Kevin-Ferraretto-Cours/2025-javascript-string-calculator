@@ -1,5 +1,64 @@
 import {describe, expect, it} from 'vitest';
-import {add} from "../src/main.js";
+import {add, extractDelimiterAndNumbers} from "../src/main.js";
+
+describe('extractDelimiterAndNumbers function', () => {
+    it('should return default delimiter (,) for input without custom delimiter', () => {
+        const result = extractDelimiterAndNumbers("1,2,3");
+        expect(result.delimiter).toBe(",");
+        expect(result.numbers).toBe("1,2,3");
+    });
+
+    it('should return default delimiter (,) for empty string', () => {
+        const result = extractDelimiterAndNumbers("");
+        expect(result.delimiter).toBe(",");
+        expect(result.numbers).toBe("");
+    });
+
+    it('should extract custom delimiter correctly', () => {
+        const result = extractDelimiterAndNumbers("//;\n1;2;3");
+        expect(result.delimiter).toBe(";");
+        expect(result.numbers).toBe("1;2;3");
+    });
+
+    it('should extract custom delimiter and handle empty numbers string', () => {
+        const result = extractDelimiterAndNumbers("//;\n");
+        expect(result.delimiter).toBe(";");
+        expect(result.numbers).toBe("");
+    });
+
+    it('should extract special characters as custom delimiters', () => {
+        const result1 = extractDelimiterAndNumbers("//.\n1.2.3");
+        expect(result1.delimiter).toBe(".");
+        expect(result1.numbers).toBe("1.2.3");
+
+        const result2 = extractDelimiterAndNumbers("//-\n1-2-3");
+        expect(result2.delimiter).toBe("-");
+        expect(result2.numbers).toBe("1-2-3");
+
+        const result3 = extractDelimiterAndNumbers("//|\n1|2|3");
+        expect(result3.delimiter).toBe("|");
+        expect(result3.numbers).toBe("1|2|3");
+    });
+
+    it('should extract multi-line numbers after custom delimiter definition', () => {
+        const result = extractDelimiterAndNumbers("//;\n1;2\n3;4");
+        expect(result.delimiter).toBe(";");
+        expect(result.numbers).toBe("1;2\n3;4");
+    });
+
+    it('should not mistake "//" at the beginning of a normal string as a delimiter definition', () => {
+        const result = extractDelimiterAndNumbers("//not a delimiter\n1,2,3");
+        expect(result.delimiter).toBe(",");
+        expect(result.numbers).toBe("//not a delimiter\n1,2,3");
+    });
+
+    it('should require a newline after delimiter definition', () => {
+        const result = extractDelimiterAndNumbers("//;1;2;3");
+        expect(result.delimiter).toBe(",");
+        expect(result.numbers).toBe("//;1;2;3");
+    });
+});
+
 
 describe('add function', () => {
     it('should return 0 for empty string', () => {

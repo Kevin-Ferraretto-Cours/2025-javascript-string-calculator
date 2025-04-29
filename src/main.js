@@ -39,14 +39,19 @@ export function extractDelimiterAndNumbers(input) {
         numbers: input
     };
 
-    // Vérifie s'il y a un délimiteur personnalisé défini
-    const customDelimiterPattern = /^\/\/(.)\n([\s\S]*)/;
-    const customDelimiterMatch = input.match(customDelimiterPattern);
+    // Vérifie si l'entrée commence par "//"
+    if (input.startsWith("//") && input.length >= 4) {
+        // Le délimiteur est le troisième caractère (indice 2)
+        const potentialDelimiter = input.charAt(2);
 
-    if (customDelimiterMatch) {
-        // Mise à jour avec le délimiteur personnalisé et la chaîne de nombres
-        result.delimiter = customDelimiterMatch[1];
-        result.numbers = customDelimiterMatch[2];
+        // Vérifie si le quatrième caractère est un saut de ligne
+        if (input.charAt(3) === '\n') {
+            // Met à jour le délimiteur avec celui spécifié
+            result.delimiter = potentialDelimiter;
+
+            // Obtient la sous-chaîne à partir de l'indice 4 (après le délimiteur et le saut de ligne)
+            result.numbers = input.substring(4);
+        }
     }
 
     return result;
