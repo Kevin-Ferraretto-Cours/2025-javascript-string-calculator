@@ -26,6 +26,11 @@ export function add(numbers) {
         if (value !== "") {
             const number = parseInt(value);
 
+            if (number > 1000) {
+                // Ignorer les nombres supérieurs à 1000
+                continue;
+            }
+
             // Vérifier si le nombre est négatif
             if (number < 0) {
                 negativeNumbers.push(number);
